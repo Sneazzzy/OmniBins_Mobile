@@ -49,7 +49,7 @@ const ProfilePage = ({ onLogout }) => {
           <TouchableOpacity style={styles.detailItem}>
             <View style={styles.detailTextContent}>
               <Text style={styles.detailLabel}>Email Address</Text>
-              <Text style={styles.detailValue} style={styles.emailText}>jamespestanas@gmail.com</Text>
+              <Text style={[styles.detailValue, styles.emailText]}>jamespestanas@gmail.com</Text>
             </View>
             <ChevronRightIcon />
           </TouchableOpacity>

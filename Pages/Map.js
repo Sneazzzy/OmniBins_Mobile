@@ -212,7 +212,7 @@ const legendItems = [
 
 export default function MapPage({
   location = { latitude: 10.2962, longitude: 123.8840 },
-  route,
+  route = undefined,
   bins = [],
 }) {
   const { width, height } = useWindowDimensions();

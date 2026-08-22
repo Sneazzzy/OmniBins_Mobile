@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "android": "^0.0.8",
     "react": "19.2.3",
     "react-native": "0.85.2",
     "react-native-maps": "^1.27.2",

@@ -12,20 +12,26 @@ import GlobalStatusBar from './Components/GlobalStatusBar';
 import BottomNavbar from './Components/BottomNavbar';
 import Header from './Components/Header';
 
+type ScreenName = 'Splash' | 'Login' | 'Dashboard' | 'Schedule' | 'Map' | 'Alerts' | 'Profile';
+type MainScreen = Exclude<ScreenName, 'Splash' | 'Login'>;
+
 // Placeholder components for Profile screen
-const PlaceholderScreen = ({ name }) => (
+const PlaceholderScreen = ({ name }: { name: string }) => (
   <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
     <Text style={{ fontSize: 20, color: '#1e7135', fontWeight: 'bold' }}>{name} Screen</Text>
   </View>
 );
 
 const App = () => {
-  const [currentScreen, setCurrentScreen] = useState('Splash');
+  const [currentScreen, setCurrentScreen] = useState<ScreenName>('Splash');
 
   const handleFinishLoading = () => setCurrentScreen('Login');
   const handleLogin = () => setCurrentScreen('Dashboard');
-  const handleNavigate = (screen) => setCurrentScreen(screen);
+  const handleNavigate = (screen: MainScreen) => setCurrentScreen(screen);
   const handleLogout = () => setCurrentScreen('Login');
+
+  const mainScreens: MainScreen[] = ['Dashboard', 'Schedule', 'Map', 'Alerts', 'Profile'];
+  const isMainScreen = (screen: ScreenName): screen is MainScreen => mainScreens.includes(screen as MainScreen);
 
   const renderScreen = () => {
     switch (currentScreen) {
@@ -48,25 +54,25 @@ const App = () => {
     }
   };
 
-  const mainScreens = ['Dashboard', 'Schedule', 'Map', 'Alerts', 'Profile'];
-  const showNavbar = mainScreens.includes(currentScreen);
-  const showHeader = mainScreens.includes(currentScreen);
+  const showNavbar = isMainScreen(currentScreen);
+  const showHeader = isMainScreen(currentScreen);
 
   // Map screen IDs to header titles
-  const screenTitles = {
+  const screenTitles: Record<MainScreen, string> = {
     'Dashboard': 'Dashboard',
     'Schedule': ' Schedule',
     'Map': ' Map',
     'Alerts': 'Report',
     'Profile': 'Profile',
   };
+  const headerTitle = isMainScreen(currentScreen) ? screenTitles[currentScreen] : 'OmniBins';
 
   return (
     <SafeAreaProvider>
       <View style={styles.appWrapper}>
         <View style={styles.topBarWrapper}>
           <GlobalStatusBar />
-          {showHeader && <Header title={screenTitles[currentScreen] || 'OmniBins'} />}
+          {showHeader && <Header title={headerTitle} />}
         </View>
 
         <View style={styles.contentArea}>
@@ -88,6 +94,9 @@ const styles = StyleSheet.create({
   appWrapper: {
     flex: 1,
     backgroundColor: '#fcfcfc',
+  },
+  topBarWrapper: {
+    zIndex: 1,
   },
   contentArea: {
     flex: 1,
